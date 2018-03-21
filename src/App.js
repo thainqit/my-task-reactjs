@@ -3,6 +3,7 @@ import './App.css';
 import TaskForm from './components/TaskForm';
 import Control from './components/Control';
 import TaskList from './components/TaskList';
+import _ from 'lodash';
 
 class App extends Component {
 
@@ -114,7 +115,12 @@ class App extends Component {
 
   onUpdateStatus = (id) => {
     var { tasks } = this.state;
-    var index = this.findIndex(id);
+    // var index = this.findIndex(id);
+
+    //user lodash
+    var index = _.findIndex(tasks, (task) => {
+      return task.id === id;
+    });
     if(index !== -1 ) {
       tasks[index].status = !tasks[index].status;
       this.setState({
@@ -191,13 +197,27 @@ class App extends Component {
       sortBy,
       sortValue
     } = this.state;
+
     if(filter) {
       if(filter.name) {
-        tasks = tasks.filter((task) => {
+        // tasks = tasks.filter((task) => {
+        //   return task.name.toLowerCase().indexOf(filter.name) !== -1;
+        // });
+        // user lodash
+        tasks = _.filter(tasks, (task) => {
           return task.name.toLowerCase().indexOf(filter.name) !== -1;
-        });
+        })
       }
-      tasks = tasks.filter((task) => {
+
+      // tasks = tasks.filter((task) => {
+      //   if(filter.status === -1) {
+      //     return tasks;
+      //   } else {
+      //     return task.status === (filter.status === 1);
+      //   }
+      // });
+      // user lodash
+      tasks = _.filter(tasks, (task) => {
         if(filter.status === -1) {
           return tasks;
         } else {
@@ -207,9 +227,13 @@ class App extends Component {
     }
 
     if(keyword) {
-      tasks = tasks.filter((task) => {
+      // tasks = tasks.filter((task) => {
+      //   return task.name.toLowerCase().indexOf(keyword) !== -1;
+      // });
+      // user lodash
+      tasks = _.filter(tasks, (task) => {
         return task.name.toLowerCase().indexOf(keyword) !== -1;
-      });
+      })
     }
 
     if(sortBy === 'name') {
